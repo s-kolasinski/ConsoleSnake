@@ -4,13 +4,13 @@
 
 class Game{
     private:
-        Snake playerSnake;
-        Fruit apple;
     
         int width;
         int height;
         int score;
         bool gameOver;
+        Snake playerSnake;
+        Fruit apple;
 
     public:
         Game();

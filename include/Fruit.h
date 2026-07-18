@@ -5,10 +5,10 @@ class Fruit{
         int x;
         int y;
     public:
-        Fruit();
+        Fruit(int width, int height);
         
         int getX();
         int getY();
 
-        void spawn();
+        void spawn(int width, int height);
 };

@@ -14,7 +14,7 @@ class Snake{
         std::vector<std::pair<int, int>> body;
         Direction currentDirection;
     public:
-        Snake();
+        Snake(int width, int height);
 
         void move();
 
@@ -23,4 +23,8 @@ class Snake{
         std::pair<int, int> getHead();
 
         std::vector<std::pair<int, int>> getBody();
+
+        Direction getDirection();
+
+        void setDirection(Direction newDir);
 };

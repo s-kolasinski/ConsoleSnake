@@ -1,7 +1,8 @@
 #include "Fruit.h"
+#include <cstdlib>
 
-Fruit::Fruit(){
-
+Fruit::Fruit(int width, int height){
+    spawn(width, height);
 }
 
 int Fruit::getX(){
@@ -12,7 +13,7 @@ int Fruit::getY(){
     return y;
 }
 
-void Fruit::spawn(){
-    x = 6;
-    y = 7;
+void Fruit::spawn(int width, int height){
+    x = rand() % (width - 2) + 1;
+    y = rand() % (height - 2) + 1;
 }
