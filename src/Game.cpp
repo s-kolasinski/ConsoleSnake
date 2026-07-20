@@ -6,27 +6,57 @@
 
 Game::Game():width(20),height(20), playerSnake(width, height), apple(width, height){
 
+    currentDifficulty = Difficulty::EASY;
     score = 0;
     gameOver = false;
 }
 
-void Game::run(){
+bool Game::run(){
     
     system("cls");
+    
+    auto lastTime = std::chrono::steady_clock::now();
+    
     
     while(!gameOver){
         
         std::cout << "\x1B[H";
-
-        draw();
-
         input();
 
-        logic();
+        auto currentTime = std::chrono::steady_clock::now();
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count();
+
+        if(elapsedTime >= (int64_t)currentDifficulty){
+            draw();
+            logic();
+            lastTime = currentTime;
+        }
+
     
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+    std::cout << "\x1B[2J\x1B[H";
+    std::cout << "========================================\n";
+    std::cout << "               GAME OVER!               \n";
+    std::cout << "========================================\n";
+    std::cout << "               SCORE: " << score << "               \n";
+    std::cout << "          PRESS R TO TRY AGAIN\n";
+    std::cout << "            PRESS Q TO QUIT\n";
     
+    std::this_thread::sleep_for(std::chrono::milliseconds(800));
+
+    while(true){
+        char key = _getch();
+        if(key == 'q' || key == 'Q'){
+            return false;
+            break;
+        }
+        else if(key == 'r' || key == 'R'){
+            return true;
+            break;
+        }
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void Game::draw(){
@@ -58,7 +88,7 @@ void Game::draw(){
         frame += '\n';
     }
     std::cout << frame;
-    
+    std::cout << "\nSCORE: " << score;
 }
 
 void Game::input(){
@@ -112,5 +142,7 @@ void Game::logic(){
         apple.spawn(width, height);
         score++;
     }
+    if(score == 5) currentDifficulty = Difficulty::MEDIUM;
+    if(score == 10) currentDifficulty = Difficulty::HARD;
 
 }

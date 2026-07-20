@@ -6,9 +6,12 @@
 int main(){
     srand(time(NULL));
 
-    Game myGame;
+    bool playAgain = true;
 
-    myGame.run();
+    while(playAgain){
+    Game myGame;
+    playAgain = myGame.run();
+    }
 
     return 0;
 }
