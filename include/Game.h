@@ -29,4 +29,5 @@ class Game{
         void draw();
         void input();
         void logic();
+        bool isRecord();
 };

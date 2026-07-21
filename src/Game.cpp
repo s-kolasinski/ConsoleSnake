@@ -3,6 +3,8 @@
 #include <thread>
 #include <chrono>
 #include <conio.h>
+#include <fstream>
+#include <string>
 
 Game::Game():width(20),height(20), playerSnake(width, height), apple(width, height){
 
@@ -40,6 +42,8 @@ bool Game::run(){
     std::cout << "               GAME OVER!               \n";
     std::cout << "========================================\n";
     std::cout << "               SCORE: " << score << "               \n";
+    if(isRecord())
+    std::cout << "       !!!!!!NEW RECORD!!!!!!\n"  ;
     std::cout << "          PRESS R TO TRY AGAIN\n";
     std::cout << "            PRESS Q TO QUIT\n";
     
@@ -55,8 +59,8 @@ bool Game::run(){
             return true;
             break;
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void Game::draw(){
@@ -145,4 +149,26 @@ void Game::logic(){
     if(score == 5) currentDifficulty = Difficulty::MEDIUM;
     if(score == 10) currentDifficulty = Difficulty::HARD;
 
+}
+
+bool Game::isRecord(){
+    int highScore = 0;
+
+    std::ifstream readFile("best_score.txt");
+    if(readFile.is_open()){
+        readFile >> highScore;
+        readFile.close();
+    }
+    bool isNewRecord = false;
+
+    if(score > highScore){
+        isNewRecord = true;
+
+        std::ofstream saveFile("best_score.txt");
+        if(saveFile.is_open()){
+            saveFile << score;
+            saveFile.close();
+        }
+    }
+    return isNewRecord;
 }
